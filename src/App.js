@@ -15,18 +15,20 @@ function parseInt10(targetText) {
 }
 
 function handleAllClickEvensts(e) {
-  let currentTotal = document.getElementById(TOTAL_ID).innerText
+  const currentTotal = document.getElementById(TOTAL_ID).innerText
   const targetValue = e.target.innerText
   let newTotal
+  let hasHitPercent = document.getElementById('hasHitPercent').innerText
+
   if (currentTotal.indexOf(DECIMAL_SIGN) > -1 && targetValue === DECIMAL_SIGN) {
     return
   }
 
   // e.target.className.indexOf('w-25')
-  // if a number or '.', concat to the total
 
   if (!isNaN(parseInt10(targetValue)) || targetValue === DECIMAL_SIGN) {
-    if (currentTotal === '0') {
+    if (currentTotal === '0' || currentTotal === '-0' || hasHitPercent === 'true') {
+      document.getElementById('hasHitPercent').innerHTML = 'false'
       return document.getElementById(TOTAL_ID).innerHTML = targetValue
     } else {
       return document.getElementById(TOTAL_ID).innerHTML = currentTotal.concat(targetValue)
@@ -47,6 +49,12 @@ function handleAllClickEvensts(e) {
       case PERCENT_SIGN:
         // stretch: if there is an 'e', then display at most 5 decimal points
         // must: if percent_sign has been hit once, then must clear on next number. need state? hidden tag?
+
+        if (hasHitPercent === 'false') {
+          hasHitPercent = 'true'
+          document.getElementById('hasHitPercent').innerHTML = hasHitPercent
+        }
+
         newTotal = currentTotal / 100
         break
       default:
@@ -61,6 +69,7 @@ class App extends Component {
     return (
       <div className="w-50" onClick={handleAllClickEvensts}>
         <div id={TOTAL_ID} className="white bg-black tr">0</div>
+        <div id="hasHitPercent" hidden>false</div>
         <div>
           <div className="fl w-25 tc bg-light-silver">{AC_TEXT}</div>
           <div className="fl w-25 tc bg-light-silver">{POS_NEG_SIGN}</div>
