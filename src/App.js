@@ -26,114 +26,74 @@ class App extends Component {
     this.state = {
       hasHitPercent: false,
       equation: [],
-      currentTotal: 0,
+      currentTotal: '0',
     }
-    this.handleAllClickEvents = this.handleAllClickEvents.bind(this)
     this.togglePosNegSign = this.togglePosNegSign.bind(this)
+    this.add = this.add.bind(this)
+    this.concatTotal = this.concatTotal.bind(this)
   }
 
   togglePosNegSign() {
-
+    this.setState({ currentTotal: -this.state.currentTotal })
+    return
   }
 
-  handleAllClickEvents(e) {
-    const currentTotal = document.getElementById(TOTAL_ID).innerText
-    const targetValue = e.target.innerText
-    let equation = [currentTotal]
-    let newTotal
+  concatTotal(e) {
+    const { currentTotal } = this.state
+    const targetText = e.target.innerText
+    let newString
 
-    if (currentTotal.indexOf(DECIMAL_SIGN) > -1 && targetValue === DECIMAL_SIGN) {
+    if (currentTotal.indexOf(DECIMAL_SIGN) > -1 && targetText === DECIMAL_SIGN) {
       return
     }
 
-    // e.target.className.indexOf('w-25')
-    debugger
-    if (!isNaN(parseInt10(targetValue)) || targetValue === DECIMAL_SIGN) {
-      if (currentTotal === '0' || currentTotal === '-0' || this.state.hasHitPercent === false) {
-        // this.setState( (prevState, props) => {return { hasHitPercent: false } })
-
-        this.setState({
-          hasHitPercent: true
-        })
-        newTotal = targetValue
-      } else {
-        newTotal = currentTotal.concat(targetValue)
+    if (currentTotal === '0' || currentTotal === '-0') {
+      if (targetText === DECIMAL_SIGN) {
+        newString = currentTotal.concat(DECIMAL_SIGN)
       }
-      return document.getElementById(TOTAL_ID).innerHTML = newTotal
+      newString = targetText
     }
+    newString = currentTotal.concat(targetText)
 
-    switch (targetValue) {
-      case AC_TEXT:
-        newTotal = "0"
-        break
-      case POS_NEG_SIGN:
-        if (currentTotal[0] === NEG_SIGN) {
-          newTotal = currentTotal.substring(1, currentTotal.length)
-        } else {
-          newTotal = NEG_SIGN.concat(currentTotal)
-        }
-        break
-      case PERCENT_SIGN:
-        // stretch: if there is an 'e', then display at most 5 decimal points
-        if (this.state.hasHitPercent === false) {
-          this.setState( { hasHitPercent: true } )
-        }
-        newTotal = currentTotal / 100
+    this.setState({currentTotal: newString})
+  }
 
-        break
-      case DIVIDE_OPERATOR:
-        // document.getElementById(TOTAL_ID).innerHTML = currentTotal.concat()
-        break
-      case MULTIPLY_OPERATOR:
-        break
-      case MINUS_OPERATOR:
-        break
-      case ADD_OPERATOR:
-        equation.push(ADD_OPERATOR)
-        newTotal = currentTotal
-        break
-      case EQUAL_OPERATOR:
-        newTotal = eval(equation.join(''))
-        break
-      default:
-        newTotal = currentTotal
-    }
-    debugger
-    return document.getElementById(TOTAL_ID).innerHTML = newTotal
+  add(e) {
+    // debugger
+    // this.setState({ currentTotal: this.state.currentTotal + parseInt10(e.target.innerText)})
   }
 
   render() {
     return (
-      <div className="w-50" onClick={this.handleAllClickEvents}>
-        <div id={TOTAL_ID} className="white bg-black tr">0</div>
-        <div id="operator" hidden>false</div>
+      <div className="w-50">
+        <div id={TOTAL_ID} className="white bg-black tr">{this.state.currentTotal}</div>
         <div>
           <div className="fl w-25 tc bg-light-silver">{AC_TEXT}</div>
-          <div className="fl w-25 tc bg-light-silver">{POS_NEG_SIGN}</div>
+          <div className="fl w-25 tc bg-light-silver" onClick={this.togglePosNegSign}>{POS_NEG_SIGN}</div>
           <div className="fl w-25 tc bg-light-silver">{PERCENT_SIGN}</div>
           <div className="fl w-25 tc bg-orange white">{DIVIDE_OPERATOR}</div>
         </div>
         <div>
-          <div className="fl w-25 tc bg-light-gray">7</div>
-          <div className="fl w-25 tc bg-light-gray">8</div>
-          <div className="fl w-25 tc bg-light-gray">9</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.add} data-value={7}>7</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>8</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>9</div>
           <div className="fl w-25 tc bg-orange white">{MULTIPLY_OPERATOR}</div>
         </div>
         <div>
-          <div className="fl w-25 tc bg-light-gray">4</div>
-          <div className="fl w-25 tc bg-light-gray">5</div>
-          <div className="fl w-25 tc bg-light-gray">6</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>4</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>5</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>6</div>
           <div className="fl w-25 tc bg-orange white">{MINUS_OPERATOR}</div>
         </div>
         <div>
-          <div className="fl w-25 tc bg-light-gray">1</div>
-          <div className="fl w-25 tc bg-light-gray">2</div>
-          <div className="fl w-25 tc bg-light-gray">3</div>
-          <div className="fl w-25 tc bg-orange white">{ADD_OPERATOR}</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>1</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>2</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>3</div>
+          <div className="fl w-25 tc bg-orange white" onClick={this.add}>{ADD_OPERATOR}</div>
         </div>
         <div>
-          <div className="fl w-50 tl bg-light-gray pl4">0</div>
-          <div className="fl w-25 tc bg-light-gray">{DECIMAL_SIGN}</div>
+          <div className="fl w-50 tl bg-light-gray pl4" onClick={this.concatTotal}>0</div>
+          <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>{DECIMAL_SIGN}</div>
           <div className="fl w-25 tc bg-orange white">{EQUAL_OPERATOR}</div>
         </div>
       </div>
