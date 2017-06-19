@@ -43,7 +43,7 @@ class App extends Component {
     const targetText = e.target.innerText
     let newString
 
-    if (currentTotal.indexOf(DECIMAL_SIGN) > -1 && targetText === DECIMAL_SIGN) {
+    if (this._hasDecimal(currentTotal, targetText)) {
       return
     }
 
@@ -61,6 +61,10 @@ class App extends Component {
   add(e) {
     // debugger
     // this.setState({ currentTotal: this.state.currentTotal + parseInt10(e.target.innerText)})
+  }
+
+  _hasDecimal(currentTotal, targetText) {
+    return currentTotal.indexOf(DECIMAL_SIGN) > -1 && targetText === DECIMAL_SIGN
   }
 
   render() {
