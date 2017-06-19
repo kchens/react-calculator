@@ -34,8 +34,14 @@ class App extends Component {
   }
 
   togglePosNegSign() {
-    this.setState({ currentTotal: -this.state.currentTotal })
-    return
+    const { currentTotal } = this.state
+    let newTotal
+    if (currentTotal.indexOf(NEG_SIGN) > -1) {
+      newTotal = currentTotal.substring(1, currentTotal.length)
+    } else {
+      newTotal = NEG_SIGN.concat(currentTotal)
+    }
+    this.setState({ currentTotal: newTotal})
   }
 
   concatTotal(e) {
@@ -46,15 +52,16 @@ class App extends Component {
     if (this._hasDecimal(currentTotal, targetText)) {
       return
     }
-
+    debugger
     if (currentTotal === '0' || currentTotal === '-0') {
       if (targetText === DECIMAL_SIGN) {
         newString = currentTotal.concat(DECIMAL_SIGN)
+      } else {
+        newString = targetText
       }
-      newString = targetText
+    } else {
+      newString = currentTotal.concat(targetText)
     }
-    newString = currentTotal.concat(targetText)
-
     this.setState({currentTotal: newString})
   }
 
