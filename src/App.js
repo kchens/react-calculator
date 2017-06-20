@@ -23,12 +23,10 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      hasHitPercent: false,
       currentTotal: '0',
       lastTotal: '0',
       displayTotal: '0',
       operator: null,
-      hasHitOperator: false,
     }
     this.togglePosNegSign = this.togglePosNegSign.bind(this)
     this.setOperator = this.setOperator.bind(this)
@@ -75,13 +73,13 @@ class App extends Component {
   }
 
   makePercent() {
-    let newTotal = parseFloat(this.state.currentTotal) / 100
+    let newTotal = parseFloat(this.state.displayTotal) / 100
     newTotal = "" + newTotal
     this.setState({currentTotal: newTotal, displayTotal: newTotal})
   }
 
   setOperator(e) {
-    const { currentTotal, displayTotal } = this.state
+    const { displayTotal } = this.state
     let newOperator
     switch (e.target.innerText) {
       case MULTIPLY_SIGN:
@@ -100,7 +98,12 @@ class App extends Component {
   evaluateEquation() {
     const { lastTotal, currentTotal, operator } = this.state
     let newTotal
-    newTotal = eval(lastTotal + operator + currentTotal)
+
+    if (!operator) {
+      return
+    }
+
+    newTotal = "" + eval(lastTotal + operator + currentTotal)
     this.setState({lastTotal: newTotal, displayTotal: newTotal})
   }
 
