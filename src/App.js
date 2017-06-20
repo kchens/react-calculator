@@ -15,11 +15,6 @@ const MINUS_OPERATOR    = '-'
 const ADD_OPERATOR      = '+'
 const EQUAL_OPERATOR    = '='
 
-function parseInt10(targetText) {
-  const radix = 10
-  return parseInt(targetText, radix)
-}
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -31,6 +26,33 @@ class App extends Component {
     this.togglePosNegSign = this.togglePosNegSign.bind(this)
     this.add = this.add.bind(this)
     this.concatTotal = this.concatTotal.bind(this)
+    this.clearTotal = this.clearTotal.bind(this)
+    this.makePercent = this.makePercent.bind(this)
+  }
+
+  clearTotal() {
+    this.setState({currentTotal: '0'})
+  }
+
+  concatTotal(e) {
+    const { currentTotal } = this.state
+    const targetText = e.target.innerText
+    let newString
+
+    if (this._hasDecimal(currentTotal, targetText)) {
+      return
+    }
+
+    if (currentTotal === '0' || currentTotal === '-0') {
+      if (targetText === DECIMAL_SIGN) {
+        newString = currentTotal.concat(DECIMAL_SIGN)
+      } else {
+        newString = targetText
+      }
+    } else {
+      newString = currentTotal.concat(targetText)
+    }
+    this.setState({currentTotal: newString})
   }
 
   togglePosNegSign() {
@@ -44,25 +66,9 @@ class App extends Component {
     this.setState({ currentTotal: newTotal})
   }
 
-  concatTotal(e) {
-    const { currentTotal } = this.state
-    const targetText = e.target.innerText
-    let newString
-
-    if (this._hasDecimal(currentTotal, targetText)) {
-      return
-    }
-    debugger
-    if (currentTotal === '0' || currentTotal === '-0') {
-      if (targetText === DECIMAL_SIGN) {
-        newString = currentTotal.concat(DECIMAL_SIGN)
-      } else {
-        newString = targetText
-      }
-    } else {
-      newString = currentTotal.concat(targetText)
-    }
-    this.setState({currentTotal: newString})
+  makePercent() {
+    const newTotal = parseFloat(this.state.currentTotal) / 100
+    this.setState({currentTotal: "" + newTotal})
   }
 
   add(e) {
@@ -79,9 +85,9 @@ class App extends Component {
       <div className="w-50">
         <div id={TOTAL_ID} className="white bg-black tr">{this.state.currentTotal}</div>
         <div>
-          <div className="fl w-25 tc bg-light-silver">{AC_TEXT}</div>
+          <div className="fl w-25 tc bg-light-silver" onClick={this.clearTotal}>{AC_TEXT}</div>
           <div className="fl w-25 tc bg-light-silver" onClick={this.togglePosNegSign}>{POS_NEG_SIGN}</div>
-          <div className="fl w-25 tc bg-light-silver">{PERCENT_SIGN}</div>
+          <div className="fl w-25 tc bg-light-silver" onClick={this.makePercent}>{PERCENT_SIGN}</div>
           <div className="fl w-25 tc bg-orange white">{DIVIDE_OPERATOR}</div>
         </div>
         <div>
