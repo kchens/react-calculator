@@ -86,8 +86,10 @@ class App extends Component {
     switch (e.target.innerText) {
       case MULTIPLY_SIGN:
         newOperator = MULTIPLY_OPERATOR
+        break
       case DIVIDE_SIGN:
         newOperator = DIVIDE_OPERATOR
+        break
       default:
         newOperator = e.target.innerText
     }
@@ -99,8 +101,6 @@ class App extends Component {
     const { lastTotal, currentTotal, operator } = this.state
     let newTotal
     newTotal = eval(lastTotal + operator + currentTotal)
-    console.log(this.state)
-    console.log(newTotal)
     this.setState({lastTotal: newTotal, displayTotal: newTotal})
   }
 
@@ -116,19 +116,19 @@ class App extends Component {
           <div className="fl w-25 tc bg-light-silver" onClick={this.clearTotal}>{AC_TEXT}</div>
           <div className="fl w-25 tc bg-light-silver" onClick={this.togglePosNegSign}>{POS_NEG_SIGN}</div>
           <div className="fl w-25 tc bg-light-silver" onClick={this.makePercent}>{PERCENT_SIGN}</div>
-          <div className="fl w-25 tc bg-orange white">{DIVIDE_SIGN}</div>
+          <div className="fl w-25 tc bg-orange white" onClick={this.setOperator}>{DIVIDE_SIGN}</div>
         </div>
         <div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>7</div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>8</div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>9</div>
-          <div className="fl w-25 tc bg-orange white">{MULTIPLY_SIGN}</div>
+          <div className="fl w-25 tc bg-orange white" onClick={this.setOperator}>{MULTIPLY_SIGN}</div>
         </div>
         <div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>4</div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>5</div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>6</div>
-          <div className="fl w-25 tc bg-orange white">{MINUS_OPERATOR}</div>
+          <div className="fl w-25 tc bg-orange white" onClick={this.setOperator}>{MINUS_OPERATOR}</div>
         </div>
         <div>
           <div className="fl w-25 tc bg-light-gray" onClick={this.concatTotal}>1</div>
