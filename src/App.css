@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  width: 300px;
+  height: 600px;
+  font-size: 24px;
 }
 
 .App-logo {
@@ -16,6 +19,14 @@
 
 .App-intro {
   font-size: large;
+}
+
+#display-total {
+  font-size: 44px
+}
+
+.button:active {
+  filter: brightness(85%);
 }
 
 @keyframes App-logo-spin {
