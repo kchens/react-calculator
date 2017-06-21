@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from './components/Button'
 import './App.css';
 
 const TOTAL_ID = 'display-total'
@@ -87,6 +88,7 @@ class App extends Component {
     const { displayTotal } = this.state
     let newOperator
 
+    this._removeFocusedCss();
     this._addFocusedCss(e.target);
 
     switch (e.target.innerText) {
@@ -113,6 +115,7 @@ class App extends Component {
 
     newTotal = "" + eval(lastTotal + operator + currentTotal)
     this.setState({lastTotal: newTotal, displayTotal: newTotal, lastInput: EQUAL_OPERATOR})
+    this._removeFocusedCss();
   }
 
   _hasDecimal(currentTotal) {
@@ -129,13 +132,15 @@ class App extends Component {
 
   // :focus pseudo-selector does not work properly
   _addFocusedCss(element) {
+    element.style.filter = "brightness(85%)";
+  }
+
+  _removeFocusedCss() {
     const operatorDivs = document.getElementsByClassName('operator')
 
     for (let i = 0; i < operatorDivs.length; i++) {
       operatorDivs[i].style.removeProperty('filter')
     }
-
-    element.style.filter = "brightness(85%)";
   }
 
   render() {
@@ -143,33 +148,33 @@ class App extends Component {
       <div className="App">
         <div id={TOTAL_ID} className="white bg-black tr pt4 pb2">{this.state.displayTotal}</div>
         <div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-silver" onClick={this.clearTotal}>{AC_TEXT}</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-silver" onClick={this.togglePosNegSign}>{POS_NEG_SIGN}</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-silver" onClick={this.makePercent}>{PERCENT_SIGN}</div>
-          <div className="button operator bb br b--black fl w-25 tc pv3 bg-orange white" onClick={this.setOperator}>{DIVIDE_SIGN}</div>
+          <Button buttonType={"topBar"} onClick={this.clearTotal} text={AC_TEXT}/>
+          <Button buttonType={"topBar"} onClick={this.togglePosNegSign} text={POS_NEG_SIGN}/>
+          <Button buttonType={"topBar"} onClick={this.makePercent} text={PERCENT_SIGN}/>
+          <Button buttonType={"rightBar"} onClick={this.setOperator} text={DIVIDE_SIGN}/>
         </div>
         <div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>7</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>8</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>9</div>
-          <div className="button operator bb br b--black fl w-25 tc pv3 bg-orange white" onClick={this.setOperator}>{MULTIPLY_SIGN}</div>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={7}/>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={8}/>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={9}/>
+          <Button buttonType={"rightBar"} onClick={this.setOperator} text={MULTIPLY_SIGN}/>
         </div>
         <div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>4</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>5</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>6</div>
-          <div className="button operator bb br b--black fl w-25 tc pv3 bg-orange white" onClick={this.setOperator}>{MINUS_OPERATOR}</div>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={4}/>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={5}/>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={6}/>
+          <Button buttonType={"rightBar"} onClick={this.setOperator} text={MINUS_OPERATOR}/>
         </div>
         <div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>1</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>2</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>3</div>
-          <div className="button operator bb br b--black fl w-25 tc pv3 bg-orange white" onClick={this.setOperator}>{ADD_OPERATOR}</div>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={1}/>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={2}/>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={3}/>
+          <Button buttonType={"rightBar"} onClick={this.setOperator} text={ADD_OPERATOR}/>
         </div>
         <div>
           <div className="button bb br fl w-50 tl pv3 bg-light-gray pl4" onClick={this.concatTotal}>0</div>
-          <div className="button bb br fl w-25 tc pv3 bg-light-gray" onClick={this.concatTotal}>{DECIMAL_SIGN}</div>
-          <div className="button operator bb br b--black fl w-25 tc pv3 bg-orange white" onClick={this.evaluateEquation}>{EQUAL_OPERATOR}</div>
+          <Button buttonType={"generic"} onClick={this.concatTotal} text={DECIMAL_SIGN}/>
+          <Button buttonType={"rightBar"} onClick={this.evaluateEquation} text={EQUAL_OPERATOR}/>
         </div>
       </div>
     );
